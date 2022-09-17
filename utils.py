@@ -39,7 +39,7 @@ def getMecabDict(str_):
         
         local_dict = {}
         f = node.feature.split(',')
-        print(f)
+
         if f[0] == "BOS/EOS" or len(f)<8:
             pass
         else:
@@ -79,7 +79,7 @@ def getKatakanaString(str_):
             katakana_str += wclass[17]
         
         node = node.next
-    
+
     return katakana_str.replace('*','')
 
 
@@ -170,7 +170,7 @@ def getRendakuFuriganaList(isolated_furigana):
         rendaku_dict = kata_rendaku_dict
     else:
         rendaku_dict = hira_rendaku_dict   
-        
+
     if first_char in rendaku_dict:
         
         rendaku_chars = rendaku_dict[first_char]
@@ -209,15 +209,22 @@ def getTargetWordFurigana(word,isolated_furigana):
     
     """
     
-    rendaku_furigana_list = getRendakuFuriganaList(isolated_furigana)
+    if isolated_furigana[0] in kata_list:
+        isolated_furigana_hira = kata2hira(isolated_furigana)
+    else:
+        isolated_furigana_hira = isolated_furigana
+    
+    rendaku_furigana_list = getRendakuFuriganaList(isolated_furigana_hira)
 
+    
     all_possible_furigana = rendaku_furigana_list
 
 
+    
     tagger = MeCab.Tagger()
     foo = tagger.parse(word).split("	")
 
-    hiragana_str = kata2hira(foo[1])
+    hiragana_str = kata2hira(foo[2])
 
     common_substrings = []
     for r_word in all_possible_furigana:

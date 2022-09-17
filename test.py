@@ -6,14 +6,13 @@ Created on Sat Sep 17 00:30:14 2022
 @author: ceo
 """
 
-import MeCab
-from suffix_trees import STree
 from utils import *
 
-# text = "冬が来る前に、もう一度あの人とめぐり逢いたい。"
+text = "冬が来る前に、もう一度あの人とめぐり逢いたい。"
 
 
-# dict_ = getMecabDict(text)
+text = "亜流"
+dict_ = getMecabDict(text)
 
 
 word = "水分"
