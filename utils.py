@@ -13,6 +13,7 @@ https://www.kokugobunpou.com/%E6%96%87%E6%B3%95%E3%81%AE%E5%9F%BA%E7%A4%8E/%E5%8
 https://manapedia.jp/text/1363
 """
 import MeCab
+from suffix_trees import STree
 
 hira_list = ['あ','い','う','え','お','か','き','く','け','こ','さ','し','す','せ','そ','た','ち','つ','て','と','な','に','ぬ','ね','の','は','ひ','ふ','へ','ほ','ま','み','む','め','も','や','ゆ','よ','ら','り','る','れ','ろ','わ','を','ん','っ','ゃ','ゅ','ょ','ー','が','ぎ','ぐ','げ','ご','ざ','じ','ず','ぜ','ぞ','だ','ぢ','づ','で','ど','ば','び','ぶ','べ','ぼ','ぱ','ぴ','ぷ','ぺ','ぽ']
 kata_list = ['ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ユ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ッ','ャ','ュ','ョ','ー','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ']
@@ -199,7 +200,7 @@ def getRendakuFuriganaList(isolated_furigana):
 
 def getTargetWordFurigana(word,isolated_furigana):
     
-    from suffix_trees import STree
+    
     
     """
     Get Furigana of one specific word in a sentence given the pronounciation
@@ -219,12 +220,17 @@ def getTargetWordFurigana(word,isolated_furigana):
     
     all_possible_furigana = rendaku_furigana_list
 
+    print(all_possible_furigana)
 
     
     tagger = MeCab.Tagger()
     foo = tagger.parse(word).split("	")
 
+    print(foo)
+    print(foo[2])
     hiragana_str = kata2hira(foo[2])
+
+    print(hiragana_str)
 
     common_substrings = []
     for r_word in all_possible_furigana:
@@ -241,4 +247,17 @@ def getTargetWordFurigana(word,isolated_furigana):
 
 
 
+def removeOkurigana(kanji_with_okurigana,pronunciation_with_okurigana):
+    
+    st = STree.STree([kanji_with_okurigana,pronunciation_with_okurigana])
+    
+    okurigana = st.lcs()
+    
+    furigana = pronunciation_with_okurigana.replace(okurigana,'')
+    
+    return furigana
 
+
+
+# wholeWordFuri = getTargetWordFurigana("獲る","える")
+# print(wholeWordFuri)
