@@ -19,7 +19,7 @@ dict_ = getMecabDict(text)
 # ON example
 word = "水分"
 target_base_pronunciation = "ふん"
-target_furigana = getTargetWordFuriganaOnYomi(word,target_base_pronunciation)
+target_furigana = getTargetWordFurigana(word,target_base_pronunciation)
 
 print(
       "word:",word,
@@ -60,7 +60,7 @@ isolated_word_pronunciation = "さかる"
 base_pronunciation = getBasePronunciationKunYomi(kanji,word,isolated_word_pronunciation)
 
 word = "花盛り"
-target_furigana = getTargetWordFuriganaKunYomi(word,base_pronunciation)
+target_furigana = getTargetWordFurigana(word,base_pronunciation)
 
 print(
       "isolated_word:",word,

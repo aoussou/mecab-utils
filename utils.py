@@ -156,7 +156,7 @@ for i,k in enumerate(hira2):
     
     hira_rendaku_dict[k] = [hira_rendaku2a[i],hira_rendaku2b[i]]
 
-def getRendakuFuriganaListOnYomi(base_pronunciation):
+def getRendakuFuriganaList(base_pronunciation):
     
     """
     Given the furigana of a word in an isolated situation, get the possible
@@ -198,7 +198,7 @@ def getRendakuFuriganaListOnYomi(base_pronunciation):
 
 
 
-def getTargetWordFuriganaOnYomi(word,base_pronunciation):
+def getTargetWordFurigana(word,base_pronunciation):
     
     
     """
@@ -214,7 +214,7 @@ def getTargetWordFuriganaOnYomi(word,base_pronunciation):
     else:
         base_pronunciation_hira = base_pronunciation
     
-    rendaku_furigana_list = getRendakuFuriganaListOnYomi(base_pronunciation_hira)
+    rendaku_furigana_list = getRendakuFuriganaList(base_pronunciation_hira)
 
     
     all_possible_furigana = rendaku_furigana_list
@@ -238,42 +238,6 @@ def getTargetWordFuriganaOnYomi(word,base_pronunciation):
     
     return furigana
 
-
-def getTargetWordFuriganaKunYomi(word,base_pronunciation):
-    
-    
-    """
-
-    """
-    
-    if base_pronunciation[0] in kata_list:
-        base_pronunciation_hira = kata2hira(base_pronunciation)
-    else:
-        base_pronunciation_hira = base_pronunciation
-    
-    rendaku_furigana_list = getRendakuFuriganaListOnYomi(base_pronunciation_hira)
-
-    
-    all_possible_furigana = rendaku_furigana_list
-
-    
-    tagger = MeCab.Tagger()
-    foo = tagger.parse(word).split("	")
-
-    hiragana_str = kata2hira(foo[2])
-
-    common_substrings = []
-    for r_word in all_possible_furigana:
-        
-
-        st = STree.STree([hiragana_str,r_word])
-        common_substrings.append(st.lcs())
-
-        
-
-    furigana = max(common_substrings, key=len)
-    
-    return furigana
 
 
 def getBasePronunciationKunYomi(kanji,word,isolated_word_pronunciation):
