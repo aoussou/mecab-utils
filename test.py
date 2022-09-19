@@ -8,11 +8,22 @@ Created on Sat Sep 17 00:30:14 2022
 
 from utils import *
 
+import MeCab
+tagger = MeCab.Tagger()
+
 text = "冬が来る前に、もう一度あの人とめぐり逢いたい。"
 
 
-text = "亜流"
+text = "積乱雲"
 dict_ = getMecabDict(text)
+parsing = tagger.parse(text).split("	")
+# print(parsing)
+
+text = "さんご礁"
+dict_ = getMecabSimpleParserDict(text)
+
+# text = "積乱雲"
+# dict_ = getMecabSimpleParserDict(text)
 
 
 
@@ -27,6 +38,19 @@ print(
       "target actual pronunciation:",target_furigana
       )
 
+
+# ON example2
+word = "さんご礁"
+target_base_pronunciation = "しょう"
+target_furigana = getTargetWordFurigana(word,target_base_pronunciation)
+
+print(
+      "word:",word,
+      "target base pronunciation:",target_base_pronunciation,
+      "target actual pronunciation:",target_furigana
+      )
+
+STOP
 # KUN example 1
 word = "獲る"
 whole_word_pronunciation = "える"
@@ -81,3 +105,29 @@ print(
       "whole word pronunciation:",whole_word_pronunciation,
       "target pronunciation:",target_furigana
       )
+
+
+# KUN example 5
+kanji = "橋"
+word = "丸木橋" 
+isolated_word_pronunciation = "はし"
+base_pronunciation = getBasePronunciationKunYomi(kanji,word,isolated_word_pronunciation)
+target_furigana = getTargetWordFurigana(word,base_pronunciation)
+
+print(
+      "word:",word,
+      "whole word pronunciation:",whole_word_pronunciation,
+      "target pronunciation:",target_furigana
+      )
+
+
+#########################
+
+# kanji = "汚"
+# example = "汚す"
+# whole_word_furigana = "けがす"
+
+# base_pronunciation = getBasePronunciationKunYomi(kanji,example,whole_word_furigana)
+# getTargetWordFurigana(example,base_pronunciation)
+
+
