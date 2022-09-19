@@ -101,9 +101,9 @@ def kata2hira(katakana):
     return hira
 
 
-def getHiraganaString(sentence):
+def getHiraganaString(str_):
 
-    kata = getKatakanaString(sentence)
+    kata = getKatakanaString(str_)
     hira = kata2hira(kata)
     
     return hira
@@ -156,7 +156,7 @@ for i,k in enumerate(hira2):
     
     hira_rendaku_dict[k] = [hira_rendaku2a[i],hira_rendaku2b[i]]
 
-def getRendakuFuriganaList(isolated_furigana):
+def getRendakuFuriganaListOnYomi(base_pronunciation):
     
     """
     Given the furigana of a word in an isolated situation, get the possible
@@ -165,7 +165,7 @@ def getRendakuFuriganaList(isolated_furigana):
     Example: ("ふん") ->　["ふん","ぶん","ぷん"]
     """
     
-    first_char = isolated_furigana[0]
+    first_char = base_pronunciation[0]
     
     if first_char in kata_list:
         rendaku_dict = kata_rendaku_dict
@@ -177,60 +177,53 @@ def getRendakuFuriganaList(isolated_furigana):
         rendaku_chars = rendaku_dict[first_char]
         
         
-        from_second_char_string = isolated_furigana[1:]
+        from_second_char_string = base_pronunciation[1:]
         
         if len(rendaku_chars) == 1:
             
             rendaku_furigana = rendaku_chars[0] + from_second_char_string
             
-            return [isolated_furigana,rendaku_furigana]
+            return [base_pronunciation,rendaku_furigana]
         else:
             rendaku_furigana1 = rendaku_chars[0] + from_second_char_string  
             rendaku_furigana2 = rendaku_chars[1] + from_second_char_string  
             
-            return [isolated_furigana,rendaku_furigana1,rendaku_furigana2]
+            return [base_pronunciation,rendaku_furigana1,rendaku_furigana2]
 
     else:
-        return [isolated_furigana]
+        return [base_pronunciation]
         
         
 
 
 
 
-def getTargetWordFurigana(word,isolated_furigana):
-    
+def getTargetWordFuriganaOnYomi(word,base_pronunciation):
     
     
     """
     Get Furigana of one specific word in a sentence given the pronounciation
     of the stem of the word in isolation (including okurigana)
     
-    Example: ("水分","ふん") ->　"分"
+    Example: ("水分","ふん") ->　"ぶん"
     
     """
     
-    if isolated_furigana[0] in kata_list:
-        isolated_furigana_hira = kata2hira(isolated_furigana)
+    if base_pronunciation[0] in kata_list:
+        base_pronunciation_hira = kata2hira(base_pronunciation)
     else:
-        isolated_furigana_hira = isolated_furigana
+        base_pronunciation_hira = base_pronunciation
     
-    rendaku_furigana_list = getRendakuFuriganaList(isolated_furigana_hira)
+    rendaku_furigana_list = getRendakuFuriganaListOnYomi(base_pronunciation_hira)
 
     
     all_possible_furigana = rendaku_furigana_list
-
-    print(all_possible_furigana)
 
     
     tagger = MeCab.Tagger()
     foo = tagger.parse(word).split("	")
 
-    print(foo)
-    print(foo[2])
     hiragana_str = kata2hira(foo[2])
-
-    print(hiragana_str)
 
     common_substrings = []
     for r_word in all_possible_furigana:
@@ -246,16 +239,55 @@ def getTargetWordFurigana(word,isolated_furigana):
     return furigana
 
 
+def getTargetWordFuriganaKunYomi(word,base_pronunciation):
+    
+    
+    """
+
+    """
+    
+    if base_pronunciation[0] in kata_list:
+        base_pronunciation_hira = kata2hira(base_pronunciation)
+    else:
+        base_pronunciation_hira = base_pronunciation
+    
+    rendaku_furigana_list = getRendakuFuriganaListOnYomi(base_pronunciation_hira)
+
+    
+    all_possible_furigana = rendaku_furigana_list
+
+    
+    tagger = MeCab.Tagger()
+    foo = tagger.parse(word).split("	")
+
+    hiragana_str = kata2hira(foo[2])
+
+    common_substrings = []
+    for r_word in all_possible_furigana:
+        
+
+        st = STree.STree([hiragana_str,r_word])
+        common_substrings.append(st.lcs())
+
+        
+
+    furigana = max(common_substrings, key=len)
+    
+    return furigana
+
 
 def removeOkurigana(kanji_with_okurigana,pronunciation_with_okurigana):
     
-    st = STree.STree([kanji_with_okurigana,pronunciation_with_okurigana])
     
-    okurigana = st.lcs()
+    for i,c in enumerate(reversed(kanji_with_okurigana)):
     
-    furigana = pronunciation_with_okurigana.replace(okurigana,'')
+    # st = STree.STree([kanji_with_okurigana,pronunciation_with_okurigana])
     
-    return furigana
+    # okurigana = st.lcs()
+    
+    # furigana = pronunciation_with_okurigana.replace(okurigana,'')
+    
+    # return furigana
 
 
 
