@@ -276,18 +276,21 @@ def getTargetWordFuriganaKunYomi(word,base_pronunciation):
     return furigana
 
 
+def getBasePronunciationKunYomi(kanji,word,isolated_word_pronunciation):
+    
+    ind_kanji = word.find(kanji)
+    isolated_word = word[ind_kanji:]
+    base_pronunciation = removeOkurigana(isolated_word,isolated_word_pronunciation)
+    
+    return base_pronunciation
+
+
 def removeOkurigana(kanji_with_okurigana,pronunciation_with_okurigana):
     
+    furigana = pronunciation_with_okurigana[:len(pronunciation_with_okurigana)-len(kanji_with_okurigana)+1]
     
-    for i,c in enumerate(reversed(kanji_with_okurigana)):
     
-    # st = STree.STree([kanji_with_okurigana,pronunciation_with_okurigana])
-    
-    # okurigana = st.lcs()
-    
-    # furigana = pronunciation_with_okurigana.replace(okurigana,'')
-    
-    # return furigana
+    return furigana
 
 
 

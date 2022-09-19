@@ -41,7 +41,7 @@ print(
 
 
 # KUN example 2
-word = "燃え盛る"
+word = "盛る"
 whole_word_pronunciation = "さかる"
 
 
@@ -54,21 +54,19 @@ print(
       )
 
 # KUN example 3
-isolated_word = "燃え盛る" 
-# it works as long as the target word is the second part of the compound
-# and is not inflected
+kanji = "盛"
+word = "燃え盛る" 
+isolated_word_pronunciation = "さかる"
+base_pronunciation = getBasePronunciationKunYomi(kanji,word,isolated_word_pronunciation)
 
-whole_word_pronunciation = "さかる"
-base_pronunciation = removeOkurigana(word,whole_word_pronunciation)
-
-compound_word = "花盛り"
-target_furigana = getTargetWordFuriganaKunYomi(compound_word,base_pronunciation)
+word = "花盛り"
+target_furigana = getTargetWordFuriganaKunYomi(word,base_pronunciation)
 
 print(
       "isolated_word:",word,
       "whole word pronunciation:",whole_word_pronunciation,
       "base pronunciation:",base_pronunciation,
-      "compound word:", compound_word,
+      "compound word:", word,
       "target pronunciation:", target_furigana
       )
 
